@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const readline = require('readline');
-const { spawnExec } = require('child_process');
+const { spawnSync } = require('child_process');
 const Counter = require('./lib/counter');
 const Preferences = require('preferences');
 const prefs = new Preferences('focus-adjuster', {}, {
@@ -10,7 +10,7 @@ const prefs = new Preferences('focus-adjuster', {}, {
 });
 
 function execFocus(value) {
-  const results = spawnExec('v4l2-ctl', ['-c', `focus_absolute=${value}`]); 
+  const results = spawnSync('v4l2-ctl', ['-c', `focus_absolute=${value}`]); 
   if(!!results.status) throw new Error(results.error);
 }
 

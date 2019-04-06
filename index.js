@@ -11,6 +11,7 @@ const prefs = new Preferences('focus-adjuster', {}, {
 
 function execFocus(value) {
   const results = spawnSync('v4l2-ctl', ['-c', `focus_absolute=${value}`]); 
+  console.log('results: ', results);
   if(!!results.status) throw new Error(results.error);
 }
 

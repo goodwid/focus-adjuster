@@ -47,12 +47,12 @@ process.stdin.on('keypress', e => {
   switch(e) {
     case 'q': process.stdout.write('\n\nExiting\n'), process.exit(0);
     case 'j': {
-      execFocus(focus.decrement(). completeAction());
+      execFocus(focus.decrement(). completeAction);
       
       break;
     }
     case 'k': {
-      execFocus(focus.increment(). completeAction());
+      execFocus(focus.increment(). completeAction);
       break;
     }
     

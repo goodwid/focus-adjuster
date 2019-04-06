@@ -1,11 +1,16 @@
 const readline = require('readline');
-const { spawnSync } = require('child_process');
+const { spawn } = require('child_process');
 const Counter = require('./lib/counter');
 const Preferences = require('preferences');
 const prefs = new Preferences('focus-adjuster', {}, {
   encrypt: false,
   format: 'json',
 });
+
+const command = 'v4l2-ctl -c focus_absolute=';
+function execFocus(value, callback) {
+  spawn('v4l2-ctl', ['-c', `focus_absolute=${value}`], callback); 
+}
 
 readline.emitKeypressEvents(process.stdin);
 if (process.stdin.isTTY)
@@ -27,7 +32,8 @@ function init() {
 
 }
 
-function completeAction() {
+function completeAction(err) {
+  if(err) return console.log(err);
   const f = focus.get();
   prefs.focus = f
   process.stdout.moveCursor(-40);
@@ -39,14 +45,12 @@ process.stdin.on('keypress', e => {
   switch(e) {
     case 'q': process.stdout.write('\n\nExiting\n'), process.exit(0);
     case 'j': {
+      execFocus(focus.decrement(). completeAction());
       
-      focus.decrement();
-      completeAction();
       break;
     }
     case 'k': {
-      focus.increment();
-      completeAction();
+      execFocus(focus.increment(). completeAction());
       break;
     }
     

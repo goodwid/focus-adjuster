@@ -29,7 +29,11 @@ if(prefs.focus) options.initialValue = prefs.focus;
 const focus = new Counter(options);
 
 function init() {
-  console.log(`Current focus value is ${focus.get()}`);
+  console.log(`
+Current focus value is ${focus.get()}
+Press Q to exit, j and k to adjust focus up/down.
+
+`);
 
 }
 

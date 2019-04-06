@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const readline = require('readline');
-const { spawn } = require('child_process');
+const { spawnExec } = require('child_process');
 const Counter = require('./lib/counter');
 const Preferences = require('preferences');
 const prefs = new Preferences('focus-adjuster', {}, {
@@ -9,9 +9,9 @@ const prefs = new Preferences('focus-adjuster', {}, {
   format: 'json',
 });
 
-const command = 'v4l2-ctl -c focus_absolute=';
-function execFocus(value, callback) {
-  spawn('v4l2-ctl', ['-c', `focus_absolute=${value}`], callback); 
+function execFocus(value) {
+  const results = spawnExec('v4l2-ctl', ['-c', `focus_absolute=${value}`]); 
+  if(!!results.status) throw new Error(results.error);
 }
 
 readline.emitKeypressEvents(process.stdin);
@@ -34,8 +34,7 @@ function init() {
 
 }
 
-function completeAction(err) {
-  if(err) return console.log(err);
+function completeAction() {
   const f = focus.get();
   prefs.focus = f
   process.stdout.moveCursor(-40);
@@ -47,12 +46,14 @@ process.stdin.on('keypress', e => {
   switch(e) {
     case 'q': process.stdout.write('\n\nExiting\n'), process.exit(0);
     case 'j': {
-      execFocus(focus.decrement(). completeAction);
+      execFocus(focus.decrement());
+      completeAction();
       
       break;
     }
     case 'k': {
-      execFocus(focus.increment(). completeAction);
+      execFocus(focus.increment());
+      completeAction();
       break;
     }
     

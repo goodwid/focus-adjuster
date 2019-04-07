@@ -33,7 +33,8 @@ function init() {
     execFocus(prefs.focus)
   }
   catch(e) {
-    console.log('error: ', e);
+    console.log('Unable to set focus.  Setting camera to manual focus.');
+    execSync('v4l2-ctl -c focus_auto=0');
   }
   console.log(`
 Current focus value is ${focus.get()}

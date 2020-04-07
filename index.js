@@ -19,7 +19,7 @@ if (process.stdin.isTTY)
 
 const options = {
   min: 0,
-  max: 32,
+  max: 40,
   initialValue: 20,
   rollover: false
 }
@@ -64,6 +64,9 @@ process.stdin.on('keypress', e => {
       execFocus(focus.increment());
       completeAction();
       break;
+    }
+    case 'a': {
+      
     }
     
   }
